@@ -7,6 +7,11 @@ void ofApp::setup(){
 
 	videoPlayer.loadMovie("movies/fingers.mov");
 	videoPlayer.play();
+	ofSetWindowTitle("RuttEtra");
+
+
+	// initialize Spout with a sender name, and a texture size
+	ofxSpout::init("RuttEtra sender", ofGetWidth(), ofGetHeight(), true);
 
 	fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
 	fbo.begin();
@@ -29,7 +34,7 @@ void ofApp::setup(){
 	//lineColor = ofColor(0, 0, 0, 255);
 	//fillColor = ofColor(255, 255, 255, 255);
 
-	//assign pixel colour to line segements
+	//assign pixel colour to line segments
 	color = true;
 
 }
@@ -42,6 +47,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	// init sender if it's not already initialized
+	ofxSpout::initSender();
+
 	fbo.begin();
 	ofClear(fillColor);
 
@@ -110,6 +118,8 @@ void ofApp::draw(){
 	fbo.draw(0, 0, ofGetWidth(), ofGetHeight());
 	//shader.end();
 	videoPlayer.draw(20, 20);
+	// send screen to Spout
+	ofxSpout::sendTexture();
 
 }
 
