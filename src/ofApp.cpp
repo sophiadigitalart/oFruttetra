@@ -78,13 +78,13 @@ void ofApp::draw() {
 		{
 
 			currentColor = pixels.getColor(i * stepWidthCam, cY * stepHeightCam);
-/*
 			ofPoint thisPoint(i * stepWidth, cY * stepHeight - currentColor.getBrightness() * amp + stepHeight);
+
 
 			if (currentColor.getBrightness() >= threshold)
 			{
 				//apply pixel colour to line segement.
-				if (color)
+			if (color)
 				{
 					currentColor = ofColor(currentColor[0], currentColor[1], currentColor[2], 200);
 					ofSetColor(currentColor);
@@ -104,7 +104,7 @@ void ofApp::draw() {
 
 			}
 			lastpoint = thisPoint;
-*/
+
 		}
 	}
 	
