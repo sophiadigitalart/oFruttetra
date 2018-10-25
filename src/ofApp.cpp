@@ -29,7 +29,7 @@ void ofApp::setup() {
 	//white on black
 	lineColor = ofColor(255, 255, 255, 150);
 	fillColor = ofColor(0, 0, 0, 255);
-
+	webcam.initGrabber(1280, 720);
 	//black on white
 	//lineColor = ofColor(0, 0, 0, 255);
 	//fillColor = ofColor(255, 255, 255, 255);
@@ -42,6 +42,7 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
 	videoPlayer.update();
+	webcam.update();
 	pixels = videoPlayer.getPixelsRef();
 }
 
@@ -116,11 +117,12 @@ void ofApp::draw() {
 	//shader.setUniformTexture( "tex0", fbo.getTextureReference(), 0 );
 	ofSetColor(255);
 	fbo.draw(0, 0, ofGetWidth(), ofGetHeight());
+	webcam.draw(500, 0);
 	//shader.end();
 	videoPlayer.draw(20, 20);
 	// send screen to Spout
 	
-	spout.sendTexture(fbo.getTexture(), "RuttEtra");
+	spout.sendTexture(webcam.getTexture(), "RuttEtra");
 }
 void ofApp::exit() {
 	spout.exit();

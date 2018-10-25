@@ -33,6 +33,7 @@ public:
 	ofColor fillColor;
 
 	ofVideoPlayer videoPlayer;
+	ofVideoGrabber webcam;
 
 	ofFbo fbo;
 
