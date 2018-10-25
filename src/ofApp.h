@@ -1,40 +1,42 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxSpout.h"
+#include "ofxSpout2Sender.h"
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp {
 
-	public:
-		void setup();
-		void update();
-		void draw();
+public:
+	void setup();
+	void update();
+	void draw();
+	void exit();
+	void keyPressed(int key);
+	void keyReleased(int key);
+	void mouseMoved(int x, int y);
+	void mouseDragged(int x, int y, int button);
+	void mousePressed(int x, int y, int button);
+	void mouseReleased(int x, int y, int button);
+	void windowResized(int w, int h);
+	void dragEvent(ofDragInfo dragInfo);
+	void gotMessage(ofMessage msg);
 
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
+	int xStep;
+	int yStep;
 
-		int xStep;
-		int yStep;
+	float amp;
+	bool color;
 
-		float amp;
-		bool color;
+	int threshold;
 
-		int threshold;
+	ofPixels pixels;
+	ofColor lineColor;
+	ofColor fillColor;
 
-		ofPixels pixels;
-		ofColor lineColor;
-		ofColor fillColor;
+	ofVideoPlayer videoPlayer;
 
-		ofVideoPlayer videoPlayer;
+	ofFbo fbo;
 
-		ofFbo fbo;
+	ofShader shader;
 
-		ofShader shader;
+	ofxSpout2::Sender spout;
 };

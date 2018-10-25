@@ -1,3 +1,2 @@
-ofxGui
+ofxSpout2
 ofxXmlSettings
-ofxSpout

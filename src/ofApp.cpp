@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-void ofApp::setup(){
+void ofApp::setup() {
 	ofSetFrameRate(60);
 	ofEnableAlphaBlending();
 
@@ -11,7 +11,7 @@ void ofApp::setup(){
 
 
 	// initialize Spout with a sender name, and a texture size
-	ofxSpout::init("RuttEtra sender", ofGetWidth(), ofGetHeight(), true);
+	//ofxSpout::init("RuttEtra sender", ofGetWidth(), ofGetHeight(), true);
 
 	fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
 	fbo.begin();
@@ -27,8 +27,8 @@ void ofApp::setup(){
 
 
 	//white on black
-	lineColor = ofColor( 255, 255, 255, 150 );
-	fillColor = ofColor( 0, 0, 0, 255 );
+	lineColor = ofColor(255, 255, 255, 150);
+	fillColor = ofColor(0, 0, 0, 255);
 
 	//black on white
 	//lineColor = ofColor(0, 0, 0, 255);
@@ -40,15 +40,15 @@ void ofApp::setup(){
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
+void ofApp::update() {
 	videoPlayer.update();
 	pixels = videoPlayer.getPixelsRef();
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
+void ofApp::draw() {
 	// init sender if it's not already initialized
-	ofxSpout::initSender();
+	//ofxSpout::initSender();
 
 	fbo.begin();
 	ofClear(fillColor);
@@ -67,7 +67,7 @@ void ofApp::draw(){
 	ofSetLineWidth(3);
 
 	int cY = 0;
-
+	
 	for (cY = 0; cY < yStep; cY++)
 	{
 
@@ -78,7 +78,7 @@ void ofApp::draw(){
 		{
 
 			currentColor = pixels.getColor(i * stepWidthCam, cY * stepHeightCam);
-
+/*
 			ofPoint thisPoint(i * stepWidth, cY * stepHeight - currentColor.getBrightness() * amp + stepHeight);
 
 			if (currentColor.getBrightness() >= threshold)
@@ -104,10 +104,10 @@ void ofApp::draw(){
 
 			}
 			lastpoint = thisPoint;
+*/
 		}
-
 	}
-
+	
 	fbo.end();
 
 	//Shader ready to do any post required.
@@ -119,51 +119,53 @@ void ofApp::draw(){
 	//shader.end();
 	videoPlayer.draw(20, 20);
 	// send screen to Spout
-	ofxSpout::sendTexture();
+	
+	spout.sendTexture(fbo.getTexture(), "RuttEtra");
+}
+void ofApp::exit() {
+	spout.exit();
+}
+//--------------------------------------------------------------
+void ofApp::keyPressed(int key) {
 
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
+void ofApp::keyReleased(int key) {
 
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key){
+void ofApp::mouseMoved(int x, int y) {
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
+void ofApp::mouseDragged(int x, int y, int button) {
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
+void ofApp::mousePressed(int x, int y, int button) {
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
+void ofApp::mouseReleased(int x, int y, int button) {
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
+void ofApp::windowResized(int w, int h) {
 
 }
 
 //--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
+void ofApp::gotMessage(ofMessage msg) {
 
 }
 
 //--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo) {
 
 }
