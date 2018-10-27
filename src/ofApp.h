@@ -27,16 +27,17 @@ public:
 	bool color;
 
 	int threshold;
+	int lineWidth;
 
 	ofPixels pixels;
 	ofColor lineColor;
 	ofColor fillColor;
 
-	ofVideoPlayer videoPlayer;
+	//ofVideoPlayer videoPlayer;
 	ofVideoGrabber webcam;
 	ofFbo fbo;
 	ofFbo shaderfbo;
-	unsigned int source;
+	//unsigned int source;
 	int stepWidthTexture;
 	int stepHeightTexture;
 

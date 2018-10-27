@@ -5,9 +5,9 @@ void ofApp::setup() {
 	ofSetFrameRate(60);
 	ofEnableAlphaBlending();
 
-	videoPlayer.loadMovie("movies/fingers.mov");
-	videoPlayer.play();
-	source = 1;
+	//videoPlayer.loadMovie("movies/fingers.mov");
+	//videoPlayer.play();
+	//source = 0;
 	textureToSend = 0;
 	webcam.initGrabber(1280, 720);
 
@@ -42,7 +42,7 @@ void ofApp::setup() {
 
 	//assign pixel colour to line segments
 	color = true;
-
+	lineWidth = 3;
 	// text
 	font.load("type/verdana.ttf", 100, true, false, true, 0.4, 72);
 	// shader
@@ -60,19 +60,21 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-	switch (source)
+		webcam.update();
+		pixels = webcam.getPixelsRef();
+	/*switch (source)
 	{
 	case 0:
-		videoPlayer.update();
-		pixels = videoPlayer.getPixelsRef();
-		break;
-	case 1:
 		webcam.update();
 		pixels = webcam.getPixelsRef();
 		break;
+	case 1:
+		videoPlayer.update();
+		pixels = videoPlayer.getPixelsRef();
+		break;
 	default:
 		break;
-	}
+	}*/
 	
 }
 
@@ -80,24 +82,25 @@ void ofApp::update() {
 void ofApp::draw() {
 	int stepWidth = ofGetWidth() / xStep;
 	int stepHeight = ofGetHeight() / yStep;
-	switch (source)
+		stepWidthTexture = webcam.getWidth() / xStep;
+		stepHeightTexture = webcam.getHeight() / yStep;
+	/*switch (source)
 	{
 	case 0:
+	case 1:
+		break;
+	case 2:
 		stepWidthTexture = videoPlayer.getWidth() / xStep;
 		stepHeightTexture = videoPlayer.getHeight() / yStep;
 		break;
-	case 1:
-		stepWidthTexture = webcam.getWidth() / xStep;
-		stepHeightTexture = webcam.getHeight() / yStep;
-		break;
 	default:
 		break;
-	}
+	}*/
 	// draw to fbo begin
 	fbo.begin();
 	ofClear(fillColor);
 	ofSetColor(lineColor);
-	ofSetLineWidth(3);
+	ofSetLineWidth(lineWidth);
 
 	int cY = 0;
 	
@@ -144,9 +147,9 @@ void ofApp::draw() {
 
 	// fbo for shader begin
 	shaderfbo.begin();
-
 	//Shader ready to do any post required.
 	shader.begin();
+	ofClear(fillColor);
 	ofSetColor(255);
 	ofFill();
 	shader.setUniformTexture( "tex0", fbo.getTextureReference(), 0 );
@@ -157,29 +160,49 @@ void ofApp::draw() {
 	//we also pass in the mouse position 
 	//we have to transform the coords to what the shader is expecting which is 0,0 in the center and y axis flipped. 
 	shader.setUniform2f("mouse", mouseX - ofGetWidth() / 2, ofGetHeight() / 2 - mouseY);
-	//fbo.draw(0, 0, ofGetWidth(), ofGetHeight());
-	if (drawText) font.drawStringAsShapes("Artist de ouf", 90, 260);
+	/*
+	21 "Rere vs Dirty Fingerz"
+	23 Mik Izif
+	01 Imprevu
+	02 Roul
+	03 DJ Koryas
+	*/
+	if (drawText) font.drawStringAsShapes("Rere vs Dirty Fingerz", 90, 260);
 	shader.end();
 
 	shaderfbo.end();
 	// fbo for shader end
+	
+	//switch (source)
+	//{
+	//case 0:
+	//	fbo.draw(0, 0, ofGetWidth(), ofGetHeight());
+	//	//webcam.draw(500, 20);
+	//	break;
+	//case 1:
+	//	shaderfbo.draw(0, 0, ofGetWidth(), ofGetHeight());
+	//	//videoPlayer.draw(20, 20);
+	//	break;
+	//default:
+	//	break;
+	//}
 
-	videoPlayer.draw(20, 20);
-	//webcam.draw(500, 20);
 	// send screen to Spout
 	switch (textureToSend) {
 	case 0:
+		fbo.draw(0, 0, ofGetWidth(), ofGetHeight());
 		spout.sendTexture(fbo.getTexture(), "RuttEtra");
 		break;
 	case 1:
-		spout.sendTexture(videoPlayer.getTexture(), "RuttEtra");
-		break;
-	case 2:
+		shaderfbo.draw(0, 0, ofGetWidth(), ofGetHeight());
 		spout.sendTexture(shaderfbo.getTexture(), "RuttEtra");
+		break;
+	/*case 2:
+		spout.sendTexture(videoPlayer.getTexture(), "RuttEtra");
 		break;
 	case 3:
 		spout.sendTexture(webcam.getTexture(), "RuttEtra");
-		break;
+		break;*/
 	default:
 		break;
 	}
@@ -199,14 +222,22 @@ void ofApp::keyReleased(int key) {
 	case 'f':
 		ofToggleFullscreen();
 		break;
-	case 'c':
-		source = 1;
-		break;
-	case 'v':
+	/*case 'c':
 		source = 0;
 		break;
+	case 'v':
+		source = 1;
+		break;*/
 	case 't':
 		drawText = !drawText;
+		break;
+	case 'a':
+		lineWidth--;
+		if (lineWidth < 1) lineWidth = 0;
+		break;
+	case 'z':
+		lineWidth++;
+		if (lineWidth > 30) lineWidth = 30;
 		break;
 	case '0':
 		textureToSend = 0;
@@ -214,12 +245,13 @@ void ofApp::keyReleased(int key) {
 	case '1':
 		textureToSend = 1;
 		break;
-	case '2':
+	/*case '2':
 		textureToSend = 2;
 		break;
 	case '3':
 		textureToSend = 3;
-		break;
+		break;*/
+
 	default:
 		break;
 	}
