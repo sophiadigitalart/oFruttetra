@@ -27,7 +27,7 @@ void ofApp::setup() {
 	webcam.setDesiredFrameRate(60);
 
 	webcam.setup(1280, 720);
-	webcam.listDevices();
+	//webcam.listDevices();
 
 	ofSetWindowTitle("RuttEtra");
 
@@ -185,7 +185,7 @@ void ofApp::draw() {
 	02 Roul
 	03 DJ Koryas
 	*/
-	if (drawText) font.drawStringAsShapes("Rere vs Dirty Fingerz", 90, 260);
+	if (drawText) font.drawStringAsShapes("batchass", 90, 260);
 	shader.end();
 
 	shaderfbo.end();
@@ -214,6 +214,9 @@ void ofApp::draw() {
 	case 1:
 		shaderfbo.draw(0, 0, ofGetWidth(), ofGetHeight());
 		spout.sendTexture(shaderfbo.getTexture(), "RuttEtra");
+		break;
+	case 2:
+		spout.sendTexture(webcam.getTexture(), "RuttEtra");
 		break;
 	/*case 2:
 		spout.sendTexture(videoPlayer.getTexture(), "RuttEtra");
