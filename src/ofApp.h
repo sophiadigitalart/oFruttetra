@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxSpout2Sender.h"
+#include "ofxXmlSettings.h"
 
 class ofApp : public ofBaseApp {
 
@@ -47,4 +48,5 @@ public:
 
 	ofxSpout2::Sender spout;
 	int textureToSend;
+	ofxXmlSettings 				settings;
 };

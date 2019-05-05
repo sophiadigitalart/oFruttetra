@@ -9,7 +9,25 @@ void ofApp::setup() {
 	//videoPlayer.play();
 	//source = 0;
 	textureToSend = 0;
-	webcam.initGrabber(1280, 720);
+	vector<ofVideoDevice> devices = webcam.listDevices();
+
+	for (int i = 0; i < devices.size(); i++) {
+		if (devices[i].bAvailable) {
+			ofLogNotice() << devices[i].id << ": " << devices[i].deviceName;
+		}
+		else {
+			ofLogNotice() << devices[i].id << ": " << devices[i].deviceName << " - unavailable ";
+		}
+	}
+	if (settings.loadFile("settings.xml") == false) {
+		ofLog() << "XML ERROR, possibly quit";
+	}
+	settings.pushTag("settings");
+	webcam.setDeviceID(settings.getValue("cam", 2));
+	webcam.setDesiredFrameRate(60);
+
+	webcam.setup(1280, 720);
+	webcam.listDevices();
 
 	ofSetWindowTitle("RuttEtra");
 
@@ -239,10 +257,10 @@ void ofApp::keyReleased(int key) {
 		lineWidth++;
 		if (lineWidth > 30) lineWidth = 30;
 		break;
-	case '0':
+	case 'e':
 		textureToSend = 0;
 		break;
-	case '1':
+	case 'r':
 		textureToSend = 1;
 		break;
 	/*case '2':
